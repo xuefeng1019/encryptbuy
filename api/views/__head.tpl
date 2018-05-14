@@ -102,14 +102,14 @@ window.addEventListener('load', function() {
     var checkLoginAndNet = function() {
         // console.log('account:' + netId);
         // console.log('account:' + account);
-        if (netId === "3" && typeof account !== "undefined") {
+        if (netId === "4" && typeof account !== "undefined") {
             //console.log('checkLoginAndNet:' + account + ' netId:' + netId);
             if (baseUri === "sign-in") {
                 $.cookie('account', account, { expires: 7, path: '/' });
                 window.location.href = '/market';
             }
             Logined();
-        } else if (netId === "3" && typeof account === "undefined") {
+        } else if (netId === "4" && typeof account === "undefined") {
             if (need_login === "1") {
                 window.location.href = '/sign-in';
             }
@@ -121,7 +121,7 @@ window.addEventListener('load', function() {
                 notLogin();
             }
         } else {
-            if (netId !== "3") {
+            if (netId !== "4") {
                 console.log(netId);
                 if (baseUri === "sign-in") {
                     $(".Hero-h2").text('您进入了错误的网络');
