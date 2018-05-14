@@ -129,7 +129,7 @@ $(function() {
                 var gas_limit = 1000000;
                 web3js.eth.getBlock("latest", function(error, _result) {
                     gas_limit = _result.gasLimit;
-                    console.log(gas_limit);
+                    //console.log(gas_limit);
                     $.ajax({
                         type: "POST",
                         url: "/create-order",
@@ -138,9 +138,9 @@ $(function() {
                             if (data.code == '200') {
                                 web3js.eth.sendTransaction({data: data.order_id, from:account, to:'0x7931D918Cec4BD0b255d19590BD1878233149EB9',value: goods_price, gasPrice: gas_price, gas: gas_limit}, function(err, transactionHash) {
                                     if (!err) {
-                                        alert(transactionHash);
+                                        pay_success(transactionHash, data.info);
                                     } else {
-                                        alert(err);
+                                        alert("支付发生了错误");
                                     }
                                 })
                             }
@@ -152,6 +152,22 @@ $(function() {
         }
     });
 })
+function pay_success(trade_no, order_id) {
+
+    $.ajax({
+        type: "POST",
+        url: "/payed-order",
+        data: {account: account, trade_no: trade_no, order_id: order_id},
+        success: function(data) {
+            if (data.code == '200') {
+                window.location.href = '/orders';
+            } else {
+                alert(data.message);
+            }
+        },
+        dataType: "json"
+    });
+}
 </script>
 <main class="Main">
     <div class="Hero">

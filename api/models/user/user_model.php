@@ -53,15 +53,27 @@ class User_model  extends MY_Model
         if (!$goods) {
             return false;
         }
-        $order = F::$f->orderORM->insert(['user_id' => $account, 'address_id' => $address_id, 'pay_price' => $goods['cn']['eth_price'], 'delivery_price' => 0, 'order_status' => 1], true);
-        if (!$order) {
+        $order_id = F::$f->orderORM->insert(['user_id' => $account, 'address_id' => $address_id, 'pay_price' => $goods['cn']['eth_price'], 'delivery_price' => 0, 'order_status' => 1], true);
+
+        if (!$order_id) {
             return false;
         }
-        $order_goods = F::$f->order_goodsORM->insert(['order_id' => $order['id'], 'goods_id' => $goods_id, 'goods_count' => 1]);
+        $order_goods = F::$f->order_goodsORM->insert(['order_id' => $order_id, 'goods_id' => $goods_id, 'goods_count' => 1]);
         if (!$order_goods) {
             return false;
         }
-        return $order['id'];
+        return $order_id;
+    }
+
+    public function userPayedOrder($account, $trade_no, $order_id) {
+        $obj = F::$f->orderORM->selectOne(['id' => $order_id, 'user_id' => $account]);
+        if (!$obj) {
+            return false;
+        }
+        if ($obj['out_trade_no'] != '') {
+            return false;
+        }
+        return F::$f->orderORM->update(array('id' => $order_id), array('out_trade_no' => $trade_no, 'pay_time' => date("Y-m-d H:i:s")));
     }
     
     public function doLogin($param) {

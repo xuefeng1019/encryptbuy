@@ -57,6 +57,7 @@ $route['goods/(:num)']       = 'index/goods/$1';
 $route['buy-confirm/(:num)'] = 'index/buyConfirm/$1';
 $route['save-address']       = 'index/saveAddress';
 $route['create-order']       = 'index/createOrder';
+$route['payed-order']        = 'index/payedOrder';
 $route['404_override']       = '';
 
 
